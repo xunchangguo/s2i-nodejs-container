@@ -63,6 +63,12 @@ if [ -n "$NPM_MIRROR" ]; then
 	npm config set registry $NPM_MIRROR
 fi
 
+if [ -n "$SASS_BINARY_SITE" ]; then
+	npm config set sass_binary_site $SASS_BINARY_SITE
+else
+	npm config set sass_binary_site https://npm.taobao.org/mirrors/node-sass/
+fi
+
 # Set the DEV_MODE to false by default.
 if [ -z "$DEV_MODE" ]; then
   export DEV_MODE=false
