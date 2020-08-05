@@ -54,10 +54,12 @@ LABEL summary="$SUMMARY" \
 
 RUN yum install -y centos-release-scl-rh && \
     ( [ "rh-${NAME}${NODEJS_VERSION}" != "${NODEJS_SCL}" ] && yum remove -y ${NODEJS_SCL}\* || : ) && \
-    INSTALL_PKGS="rh-nodejs${NODEJS_VERSION} rh-nodejs${NODEJS_VERSION}-npm rh-nodejs${NODEJS_VERSION}-nodejs-nodemon nss_wrapper" && \
-    ln -s /usr/lib/node_modules/nodemon/bin/nodemon.js /usr/bin/nodemon && \
+    curl -sL https://rpm.nodesource.com/setup_14.x | bash - && \
+    INSTALL_PKGS="nodejs nss_wrapper" && \
     yum install -y --setopt=tsflags=nodocs $INSTALL_PKGS && \
     rpm -V $INSTALL_PKGS && \
+    npm install nodemon -g && \
+    ln -s /usr/lib/node_modules/nodemon/bin/nodemon.js /usr/bin/nodemon && \
     yum -y clean all --enablerepo='*'
 
 # Copy the S2I scripts from the specific language image to $STI_SCRIPTS_PATH
